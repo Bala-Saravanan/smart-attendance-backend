@@ -5,10 +5,10 @@ import Attendance from "../models/attendance.model.js";
 
 export const addSubject = async (req, res) => {
   try {
-    const { name, teacher, periodTime, ClassName } = req.body;
+    const { name, teacher, periodTime, classId } = req.body;
 
     // validate input
-    if (!name || !teacher || !periodTime || !ClassName) {
+    if (!name || !teacher || !periodTime || !classId) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -19,7 +19,7 @@ export const addSubject = async (req, res) => {
     }
 
     // find class
-    const ClassDoc = await Class.findOne({ name: ClassName });
+    const ClassDoc = await Class.findById(classId);
     if (!ClassDoc) {
       return res.status(404).json({ message: "Class not found" });
     }

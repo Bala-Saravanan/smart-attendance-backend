@@ -61,7 +61,8 @@ export const markAttendance = async (req, res) => {
   try {
     const { subjectId } = req.body;
     const file = req.file; // uploaded photo from multer
-
+    console.log(req.file);
+    console.log(subjectId);
     if (!file) {
       return res.status(400).json({ message: "No image uploaded" });
     }
