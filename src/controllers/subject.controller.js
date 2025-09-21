@@ -62,7 +62,21 @@ export const deleteSubject = async (req, res) => {
     });
   } catch (error) {
     console.error("Delete Subject Error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: error.message || "Internal Server Error" });
+  }
+};
+
+export const getAllSubject = async (req, res) => {
+  try {
+    const subjects = await Subject.find({}).populate("teacherId", "name email");
+    // console.log(subjects);
+    return res.status(200).json({
+      message: "Subject fetched successfully",
+      subjects,
+    });
+  } catch (error) {
+    console.error("Get all Subjects Error: ", error);
+    res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 };
 

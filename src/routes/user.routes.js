@@ -6,7 +6,7 @@ import {
   loginStudent,
   loginTeacher,
   registerTeacher,
-  logoutTeacher,
+  // logoutTeacher,
 } from "../controllers/user.controller.js";
 import { authenticateRole } from "../middlewares/authMiddleware.js";
 
@@ -20,7 +20,7 @@ router.post("/register-face", upload.single("file"), registerFace);
 router.post("/student-login", loginStudent);
 router.post("/teacher-register", registerTeacher);
 router.post("/teacher-login", loginTeacher);
-router.get("/teacher-logout", authenticateRole(["teacher"]), logoutTeacher);
+// router.get("/teacher-logout", authenticateRole(["teacher"]), logoutTeacher);
 
 // Profile fetch
 router.get("/:id", authenticateRole(["student"]), getProfile);

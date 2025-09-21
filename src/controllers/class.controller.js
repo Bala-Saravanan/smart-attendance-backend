@@ -53,15 +53,18 @@ export const getClasses = async (req, res) => {
 // Get class details
 export const getClassDetails = async (req, res) => {
   try {
-    const classId = req.params.id;
+    const { id } = req.params;
 
-    // TODO: Fetch from MongoDB
-    res.json({
-      id: classId,
-      name: "Computer Science",
-      teacher: "Teacher A",
-      students: ["Student1", "Student2"],
-    });
+    const classData = await Class.findById(id)
+      .populate("teacherId", "name email") // only return teacher name & email
+      .populate("studentIds", "name email") // only return student names & emails
+      .populate("subjectIds", "name periodTime"); // only return subject names & period
+
+    if (!classData) {
+      return res.status(404).json({ message: "Class not found" });
+    }
+
+    res.json(classData);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

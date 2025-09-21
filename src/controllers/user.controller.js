@@ -112,7 +112,7 @@ export const loginStudent = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true, // prevents client-side JS access
       secure: process.env.NODE_ENV === "production", // only over HTTPS in production
-      sameSite: "None",
+      sameSite: "none",
     });
     return res.status(200).json({
       message: "Student Login Successful!",
@@ -172,6 +172,7 @@ export const registerTeacher = async (req, res) => {
 export const loginTeacher = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("email", email);
     const teacher = await User.findOne({ email });
 
     if (!teacher || teacher.role !== "teacher") {
@@ -189,14 +190,24 @@ export const loginTeacher = async (req, res) => {
       { expiresIn: "1d" } // 1 day expiry
     );
     console.log(token);
-    res.cookie("token", token, {
-      httpOnly: true, // prevents client-side JS access
-      secure: process.env.NODE_ENV === "production", // only over HTTPS in production
-      sameSite: "None",
-    });
+    // res.cookie("token", token, {
+    //   httpOnly: true, // prevents client-side JS access
+    //   secure: process.env.NODE_ENV === "production", // only over HTTPS in production
+    //   sameSite: "none",
+    // });
 
+    // return res.status(200).json({
+    //   message: `Login Successful! Welcome ${teacher.name}`,
+    // });
     return res.status(200).json({
       message: `Login Successful! Welcome ${teacher.name}`,
+      token, // ✅ send token
+      teacher: {
+        id: teacher._id,
+        name: teacher.name,
+        email: teacher.email,
+        role: teacher.role,
+      },
     });
   } catch (error) {
     console.log("Error Logging in Teacher", error);
@@ -204,7 +215,7 @@ export const loginTeacher = async (req, res) => {
   }
 };
 
-export const logoutTeacher = (req, res) => {
-  res.clearCookie("token");
-  return res.json({ message: "Logged out successfully" });
-};
+// export const logoutTeacher = (req, res) => {
+//   res.clearCookie("token");
+//   return res.json({ message: "Logged out successfully" });
+// };
